@@ -1,0 +1,194 @@
+// These tests need to be run with the "--ui tdd" switch.
+// They should be run after the server (app.js) has been started.
+
+var assert = require('assert');
+var probable = require('../probable');
+
+// var _ = require('lodash');
+
+var settings = {
+  rangeTableAParams: [
+    [[0, 80], 'a'],
+    [[81, 95], 'b'],
+    [[96, 100], 'c']
+  ],
+  rangeTableBParams: {
+    failure: 30,
+    success: 20,
+    doover: 5
+  }
+};
+
+var utils = {};
+
+suite('roll', function rollSuite() {
+  test('should roll results that are within 0 and 5.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.roll(6);
+        assert.ok(result >= 0);
+        assert.ok(result < 6);
+      }
+      testDone();
+    }
+  );
+
+  var maxInt = 9007199254740992;
+  test('should roll results that are within 0 and maxInt - 1.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.roll(maxInt);
+        // console.log(result);
+        assert.ok(result >= 0);
+        assert.ok(result < maxInt);
+      }
+      testDone();
+    }
+  );
+
+  test('should roll 0 when rolling a 0-sided die.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.roll(0);
+        assert.ok(result === 0);
+      }
+      testDone();
+    }
+  );
+
+  test('should roll 0 when rolling a 1-sided die.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.roll(1);
+        assert.ok(result === 0);
+      }
+      testDone();
+    }
+  );
+
+});
+
+suite('pickFromArray', function pickFromArraySuite() {
+  test('should return the emptyArrayDefault when picking from an empty array.', 
+    function pickFromEmpty(testDone) {
+      assert.equal(probable.pickFromArray([], 'Empty'), 'Empty');
+      testDone();
+    }
+  );
+
+  test('should return the emptyArrayDefault when picking from a non-array.', 
+    function pickFromNonArray(testDone) {
+      assert.equal(probable.pickFromArray({}, 'Empty'), 'Empty');
+      testDone();
+    }
+  );
+
+  test('should return the emptyArrayDefault when picking from undefined', 
+    function pickFromUndefined(testDone) {
+      assert.equal(probable.pickFromArray(undefined, 'Empty'), 'Empty');
+      testDone();
+    }
+  );
+
+  test('should always return the same result when picking from a ' + 
+    'single-element array', 
+    function pickFromSingleElementArray(testDone) {
+      for (var i = 0; i < 10; ++i) {
+        assert.equal(probable.pickFromArray(['hay']), 'hay');
+      }
+      testDone();
+    }
+  );
+
+  test('should always return an element in the array when picking from a ' + 
+    'two-element array', 
+    function pickFromTwoElementArray(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.pickFromArray(['hay', 'guys']);
+        assert.ok(result === 'hay' || result === 'guys');
+      }
+      testDone();
+    }
+  );
+
+  test('should always return an element in the array when picking from a ' + 
+    'multi-element array', 
+    function pickFromBiggerArray(testDone) {
+      var array = [];
+      for (var j = 0; j < 1000; ++j) {
+        array.push(probable.roll(10000));
+      }
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.pickFromArray(array);
+        assert.ok(array.indexOf(result) > -1);
+      }
+      testDone();
+    }
+  );
+
+});
+
+suite('createRangeTable', function createRangeTableSuite() {
+  test('should create a rangeTable', function createRangeTableTest(testDone) {
+    var table = probable.createRangeTable(settings.rangeTableAParams);
+    assert.equal(typeof table, 'object');
+    assert.equal(table.length, 101);
+
+    for (var i = 0; i <= 100; ++i) {
+      var outcome = table.outcomeAtIndex(i);
+      var expectedValue = 'a';
+      if (i > 80 && i < 96) {
+        expectedValue = 'b';
+      }
+      else if (i >= 96) {
+        expectedValue = 'c';
+      }
+      assert.equal(expectedValue, outcome);
+    }
+
+    for (var j = 0; j <= 100; ++j) {
+      var outcome = table.roll();
+      assert.ok(outcome === 'a' || outcome === 'b' || outcome === 'c');
+      // TODO: Make sure the outcome distribution is reasonable.
+    }
+
+    testDone();
+  });
+});
+
+
+suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
+  test('should create a rangeTable from a dict', 
+    function createRangeTableFromDictTest(testDone) {
+      var table = probable.createRangeTableFromDict(settings.rangeTableBParams);
+      assert.equal(typeof table, 'object');
+      assert.equal(table.length, 55);
+
+      for (var i = 0; i < 55; ++i) {
+        var outcome = table.outcomeAtIndex(i);
+        var expectedValue = 'failure';
+        if (i > 29 && i < 50) {
+          expectedValue = 'success';
+        }
+        else if (i >= 50) {
+          expectedValue = 'doover';
+        }
+        assert.equal(expectedValue, outcome);
+      }
+
+      for (var j = 0; j <= 100; ++j) {
+        var outcome = table.roll();
+        assert.ok(outcome === 'failure' || outcome === 'success' || 
+          outcome === 'doover');
+        // TODO: Make sure the outcome distribution is reasonable.
+      }
+
+      testDone();
+    }
+  );
+});
+
+
+
+
+

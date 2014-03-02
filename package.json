@@ -1,0 +1,16 @@
+{
+  "name": "probable",
+  "version": "0.1.0",
+  "description": "Utilities for creating and using probability tables.",
+  "main": "probable.js",
+  "scripts": {
+    "test": "mocha --ui tdd tests/probabletests.js"
+  },
+  "keywords": [
+    "probability",
+    "random",
+    "table"
+  ],
+  "author": "Jim Kang",
+  "license": "ISC"
+}
