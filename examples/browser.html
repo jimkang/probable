@@ -130,13 +130,13 @@ var tableB = probable.createRangeTableFromDict({
   'Poison gas is unleashed.': 5,
   '100 demogorgons surround you.': 4,
   'Whatever gender you consider yourself, you now consider yourself the opposite of what you considered that original gender.': 2,
-  'Time\s flow reverses.': 1
+  'Time\'s flow reverses.': 1
 });
 
 document.querySelector('#rollTableB').onclick = function onRollBClick() {
 	var outcomeEl = document.querySelector('#tableB-outcome');
 	outcomeEl.innerHTML = '';
-	
+
 	for (var i = 0; i < 62; ++i) {
 		var liEl = document.createElement('li');
 		liEl.innerText = tableB.roll();
