@@ -11,6 +11,10 @@
     "random",
     "table"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jimkang/probable.git"
+  },
   "author": "Jim Kang",
   "license": "ISC"
 }
