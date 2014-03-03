@@ -1,0 +1,150 @@
+<html>
+<head>
+	<title>Probable example</title>
+	<link rel="stylesheet" type="text/css" href="example.css"></link>
+</head>
+<body>
+	<div>
+		Examples for <a href="https://github.com/jimkang/probable">probable.js</a>. You can alternatively open the console in Web Inspector and mess with the <code>probable</code> object.
+	</div>
+	<dl>
+		<dt>
+			probable.roll
+		</dt>
+		<dd>
+			<div>
+				<label for="roll-size">Size of roll</label>
+				<input id="roll-size" value="6"></input>
+				<button id="roll">Roll</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<div id="roll-outcome" class="outcome"></div>
+			</div>
+		</dd>
+
+		<dt>
+			probable.pickFromArray
+		</dt>
+		<dd>
+			<div>
+				<label for="pick-array">Comma-separated array contents</label>
+				<input id="pick-array" value="one, two, three, four, five, six"></input>
+				<button id="pick">Pick</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<div id="pick-outcome" class="outcome"></div>
+			</div>
+		</dd>
+
+		<dt>
+			probable.createRangeTable
+		</dt>
+		<dd>
+			<div>
+				rangeTableA was created via createRangeTable with these parameters:
+<pre>[
+  [[0, 80], 'Orc'],
+  [[81, 95], 'Gelatinous Cube'],
+  [[96, 99], 'Displacer Beast']
+]
+</pre>
+				<button id="rollTableA">Roll 100 times on this table</button>
+			</div>
+
+			<div class="outcome-container">			
+				<div>Outcome</div>
+				<div id="tableA-outcome" class="outcome"></div>
+			</div>
+		</dd>
+
+		<dt>
+			probable.createRangeTableFromDict
+		</dt>
+		<dd>
+			<div>
+				rangeTableB was created from createRangeTableFromDict with these parameters:
+<pre>{
+  'Nothing happens.': 30,
+  'A bag of gold drops out.': 20,
+  'Poison gas is unleashed.': 5,
+  '100 demogorgons surround you.': 4,
+  'Whatever gender you consider yourself, you now consider yourself the opposite of what you considered that original gender.': 2,
+  'Time\s flow reverses.': 1
+}</pre>
+				<button id="rollTableB">Roll 62 times on this table</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<ol id="tableB-outcome" class="outcome"></ol>
+			</div>
+		</dd>
+
+
+	</dl>
+
+<script src="../probable.js"></script>
+<script>
+
+document.querySelector('#roll').onclick = function onRollClick() {
+	var rollSize = +document.querySelector('#roll-size').value;
+	var outcomeEl = document.querySelector('#roll-outcome');
+	outcomeEl.innerText = probable.roll(rollSize);
+	outcomeEl.parentElement.classList.add('revealed');
+};
+
+document.querySelector('#pick').onclick = function onPickClick() {
+	var contentString = document.querySelector('#pick-array').value;
+	var array = contentString.split(/,\s*/);
+	var outcomeEl = document.querySelector('#pick-outcome');
+	outcomeEl.innerText = probable.pickFromArray(array);
+	outcomeEl.parentElement.classList.add('revealed');
+};
+
+var tableA = probable.createRangeTable([
+	[[0, 80], 'Orc'],
+  [[81, 95], 'Gelatinous Cube'],
+  [[96, 99], 'Displacer Beast']
+]);
+
+document.querySelector('#rollTableA').onclick = function onRollAClick() {
+	var outcomeEl = document.querySelector('#tableA-outcome');
+	var outcomes = '';
+	for (var i = 0; i < 100; ++i) {
+		if (outcomes.length > 0) {
+			outcomes += ', ';
+		}
+		outcomes += tableA.roll();
+	}
+	outcomeEl.innerText = outcomes;
+	outcomeEl.parentElement.classList.add('revealed');
+};
+
+var tableB = probable.createRangeTableFromDict({
+  'Nothing happens.': 30,
+  'A bag of gold drops out.': 20,
+  'Poison gas is unleashed.': 5,
+  '100 demogorgons surround you.': 4,
+  'Whatever gender you consider yourself, you now consider yourself the opposite of what you considered that original gender.': 2,
+  'Time\s flow reverses.': 1
+});
+
+document.querySelector('#rollTableB').onclick = function onRollBClick() {
+	var outcomeEl = document.querySelector('#tableB-outcome');
+	outcomeEl.innerHTML = '';
+	
+	for (var i = 0; i < 62; ++i) {
+		var liEl = document.createElement('li');
+		liEl.innerText = tableB.roll();
+		outcomeEl.appendChild(liEl);
+	}
+	outcomeEl.parentElement.classList.add('revealed');
+};
+</script>
+
+
+</body>
