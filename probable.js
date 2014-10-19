@@ -89,11 +89,29 @@ function pickFromArray(array, emptyArrayDefault) {
   }
 }
 
+// Combines every element in A with every element in B.
+function crossArrays(arrayA, arrayB) {
+  var combo = [];
+  arrayA.forEach(function combineElementWithArrayB(aElement) {
+    arrayB.forEach(function combineBElementWithAElement(bElement) {
+      if (Array.isArray(aElement) || Array.isArray(bElement)) {
+        combo.push(aElement.concat(bElement));
+      }
+      else {
+        combo.push([aElement, bElement]);
+      }
+    });
+  });
+  return combo;
+}
+
+
 return {
   roll: roll,
   createRangeTable: createRangeTable,
   createRangeTableFromDict: createRangeTableFromDict,
-  pickFromArray: pickFromArray
+  pickFromArray: pickFromArray,
+  crossArrays: crossArrays
 };
 
 }());

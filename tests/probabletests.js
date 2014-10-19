@@ -188,7 +188,27 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
   );
 });
 
-
-
-
-
+suite('crossArrays', function crossArraysSuite() {
+  test('should combine every element in array A with every element in array B', 
+    function crossArraysTest() {
+      var a = ['a', 'b', 'c', 'd'];
+      var b = [0, 1, 2];
+      assert.deepEqual(probable.crossArrays(a, b), 
+        [
+          ['a', 0],
+          ['a', 1],
+          ['a', 2],
+          ['b', 0],
+          ['b', 1],
+          ['b', 2],
+          ['c', 0],
+          ['c', 1],
+          ['c', 2],
+          ['d', 0],
+          ['d', 1],
+          ['d', 2]
+        ]
+      );
+    }
+  )
+});
