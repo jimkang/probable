@@ -210,5 +210,28 @@ suite('crossArrays', function crossArraysSuite() {
         ]
       );
     }
-  )
+  );
+
+  test('should gemerate an empty array if one of the params is an empty array', 
+    function crossEmptyArrayTest() {
+      var a = ['a', 'b', 'c', 'd'];
+      var b = [];
+      assert.deepEqual(probable.crossArrays(a, b), []);
+    }
+  );
+
+  test('cross array with one-element array', 
+    function crossOneElementArrayTest() {
+      var a = ['a', 'b', 'c', 'd'];
+      var b = [100];
+      assert.deepEqual(probable.crossArrays(a, b), 
+        [
+          ['a', 100],
+          ['b', 100],
+          ['c', 100],
+          ['d', 100]
+        ]
+      );
+    }
+  );  
 });
