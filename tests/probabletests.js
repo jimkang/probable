@@ -188,12 +188,12 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
   );
 });
 
-suite('crossArrays', function crossArraysSuite() {
+suite('getCartesianProduct', function crossArraysSuite() {
   test('should combine every element in array A with every element in array B', 
     function crossArraysTest() {
       var a = ['a', 'b', 'c', 'd'];
       var b = [0, 1, 2];
-      assert.deepEqual(probable.crossArrays(a, b), 
+      assert.deepEqual(probable.getCartesianProduct([a, b]),
         [
           ['a', 0],
           ['a', 1],
@@ -216,7 +216,7 @@ suite('crossArrays', function crossArraysSuite() {
     function crossEmptyArrayTest() {
       var a = ['a', 'b', 'c', 'd'];
       var b = [];
-      assert.deepEqual(probable.crossArrays(a, b), []);
+      assert.deepEqual(probable.getCartesianProduct([a, b]), []);
     }
   );
 
@@ -224,7 +224,7 @@ suite('crossArrays', function crossArraysSuite() {
     function crossOneElementArrayTest() {
       var a = ['a', 'b', 'c', 'd'];
       var b = [100];
-      assert.deepEqual(probable.crossArrays(a, b), 
+      assert.deepEqual(probable.getCartesianProduct([a, b]),
         [
           ['a', 100],
           ['b', 100],
@@ -233,5 +233,93 @@ suite('crossArrays', function crossArraysSuite() {
         ]
       );
     }
+  );
+
+  test('should get the Cartesian product of three arrays', 
+    function threeArrayCartesianProductTest() {
+      var product = probable.getCartesianProduct([
+          [null, 'a', 'b'],
+          ['omega', 'gamma'],
+          [null, 1, 2]
+        ]);
+
+      assert.deepEqual(product,
+        [
+          [null, 'omega', null],
+          [null, 'omega', 1],
+          [null, 'omega', 2],
+          [null, 'gamma', null],
+          [null, 'gamma', 1],
+          [null, 'gamma', 2],
+          ['a', 'omega', null],
+          ['a', 'omega', 1],
+          ['a', 'omega', 2],
+          ['a', 'gamma', null],
+          ['a', 'gamma', 1],
+          ['a', 'gamma', 2],
+          ['b', 'omega', null],
+          ['b', 'omega', 1],
+          ['b', 'omega', 2],
+          ['b', 'gamma', null],
+          ['b', 'gamma', 1],
+          ['b', 'gamma', 2]
+        ]
+      );
+    }
+  );
+
+test('should get the Cartesian product of four arrays', 
+    function fourArrayCartesianProductTest() {
+      var product = probable.getCartesianProduct([
+          [null, 'a', 'b'],
+          ['omega', 'gamma'],
+          [null, 1, 2],
+          ['Bonus Cat', 'Dr. Wily']
+        ]);
+
+      assert.deepEqual(product,
+        [
+          [null, 'omega', null, 'Bonus Cat'],
+          [null, 'omega', null, 'Dr. Wily'],
+          [null, 'omega', 1, 'Bonus Cat'],
+          [null, 'omega', 1, 'Dr. Wily'],
+          [null, 'omega', 2, 'Bonus Cat'],
+          [null, 'omega', 2, 'Dr. Wily'],
+          [null, 'gamma', null, 'Bonus Cat'],
+          [null, 'gamma', null, 'Dr. Wily'],
+          [null, 'gamma', 1, 'Bonus Cat'],
+          [null, 'gamma', 1, 'Dr. Wily'],
+          [null, 'gamma', 2, 'Bonus Cat'],
+          [null, 'gamma', 2, 'Dr. Wily'],
+
+          ['a', 'omega', null, 'Bonus Cat'],
+          ['a', 'omega', null, 'Dr. Wily'],
+          ['a', 'omega', 1, 'Bonus Cat'],
+          ['a', 'omega', 1, 'Dr. Wily'],
+          ['a', 'omega', 2, 'Bonus Cat'],
+          ['a', 'omega', 2, 'Dr. Wily'],
+          ['a', 'gamma', null, 'Bonus Cat'],
+          ['a', 'gamma', null, 'Dr. Wily'],
+          ['a', 'gamma', 1, 'Bonus Cat'],
+          ['a', 'gamma', 1, 'Dr. Wily'],
+          ['a', 'gamma', 2, 'Bonus Cat'],
+          ['a', 'gamma', 2, 'Dr. Wily'],
+
+          ['b', 'omega', null, 'Bonus Cat'],
+          ['b', 'omega', null, 'Dr. Wily'],
+          ['b', 'omega', 1, 'Bonus Cat'],
+          ['b', 'omega', 1, 'Dr. Wily'],
+          ['b', 'omega', 2, 'Bonus Cat'],
+          ['b', 'omega', 2, 'Dr. Wily'],
+          ['b', 'gamma', null, 'Bonus Cat'],
+          ['b', 'gamma', null, 'Dr. Wily'],
+          ['b', 'gamma', 1, 'Bonus Cat'],
+          ['b', 'gamma', 1, 'Dr. Wily'],
+          ['b', 'gamma', 2, 'Bonus Cat'],
+          ['b', 'gamma', 2, 'Dr. Wily']
+        ]
+      );
+    }
   );  
+
 });
