@@ -7,6 +7,16 @@ function roll(sides) {
   return Math.floor(Math.random() * sides);
 }
 
+// This is like `roll`, but it is 1-based, like traditional dice.
+function rollDie(sides) {
+  if (sides === 0) {
+    return 0;
+  }
+  else {
+    return roll(sides) + 1;
+  }
+}
+
 // Makes a table that maps probability ranges to outcomes.
 // 
 // rangesAndOutcomePairs should look like this:
@@ -111,6 +121,7 @@ function getCartesianProduct(arrays) {
 
 return {
   roll: roll,
+  rollDie: rollDie,
   createRangeTable: createRangeTable,
   createRangeTableFromDict: createRangeTableFromDict,
   pickFromArray: pickFromArray,

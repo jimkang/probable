@@ -68,6 +68,53 @@ suite('roll', function rollSuite() {
 
 });
 
+suite('rollDie', function rollDieSuite() {
+  test('should roll results that are within 1 and 6, inclusive.',
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.rollDie(6);
+        assert.ok(result >= 1);
+        assert.ok(result <= 6);
+      }
+      testDone();
+    }
+  );
+
+  var maxInt = 9007199254740992;
+  test('should roll results that are within 1 and maxInt, inclusive.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.rollDie(maxInt);
+        // console.log(result);
+        assert.ok(result >= 1);
+        assert.ok(result <= maxInt);
+      }
+      testDone();
+    }
+  );
+
+  test('should roll 0 when rolling a 0-sided die.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.rollDie(0);
+        assert.ok(result === 0);
+      }
+      testDone();
+    }
+  );
+
+  test('should roll 1 when rolling a 1-sided die.', 
+    function rollD6(testDone) {
+      for (var i = 0; i < 100; ++i) {
+        var result = probable.rollDie(1);
+        assert.ok(result === 1);
+      }
+      testDone();
+    }
+  );
+
+});
+
 suite('pickFromArray', function pickFromArraySuite() {
   test('should return the emptyArrayDefault when picking from an empty array.', 
     function pickFromEmpty(testDone) {

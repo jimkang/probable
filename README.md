@@ -18,7 +18,9 @@ In Node:
 
 From there, you just use the `probable` object.
 
-`roll` is a function that basically rolls a die for you. It will randomly generate an integer between 0 and one less than the number of "sides" you specify. For example, `probable.roll(5)` will return 0, 1, 2, 3, 4, or 5.
+`roll` is a function that basically rolls a die for you. It will randomly generate an integer between 0 and one less than the number of "sides" you specify. For example, `probable.roll(6)` will return 0, 1, 2, 3, 4, or 5.
+
+`rollDie` is like `roll`, except 1-based, like traditional dice. `probable.roll(6)` will return 1, 2, 3, 4, 5, or 6.
 
 `pickFromArray` will randomly pick an element of an array that you give it, giving each element equal weight.
 
