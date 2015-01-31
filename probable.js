@@ -67,7 +67,9 @@ function outcomeAtIndexFromTable(index) {
 // A shorthand way to create a range table object. Given a hash of outcomes 
 // and the *size* of the probability range that they occupy, this function 
 // generates the ranges for createRangeTable.
-// 
+// It's handy, but if you're doing this a lot, keep in mind that it's much 
+// slower than createRangeTable.
+
 function createRangeTableFromDict(outcomesAndLikelihoods) {
   return createRangeTable(
     convertDictToRangesAndOutcomePairs(outcomesAndLikelihoods)
@@ -83,25 +85,44 @@ function createRangeTableFromDict(outcomesAndLikelihoods) {
 //
 // Returns an array in this kind of format:
 // [
-//  [[0, 80], 'a'],
-//  [[81, 95], 'b'],
-//  [[96, 100], 'c']
+//  [[0, 29], 'failure'],
+//  [[30, 49], 'success'],
+//  [[50, 54], 'doover']
 // ]
 
 function convertDictToRangesAndOutcomePairs(outcomesAndLikelihoods) {
-  var endOfLastUsedRange = -1;
   var rangesAndOutcomes = [];
+  var endOfLastUsedRange = -1;
+
+  var loArray = convertOLPairDictToLOArray(outcomesAndLikelihoods);
+  loArray = loArray.sort(compareLikelihoodSizeInPairsDesc);
+
+  loArray.forEach(function addRangeOutcomePair(loPair) {
+    var likelihood = loPair[0];
+    var outcome = loPair[1];
+    var start = endOfLastUsedRange + 1;
+    var endOfNewRange = start + likelihood - 1;
+    rangesAndOutcomes.push([[start, endOfNewRange], outcome]);
+
+    endOfLastUsedRange = endOfNewRange;
+  });
+
+  return rangesAndOutcomes;
+}
+
+function convertOLPairDictToLOArray(outcomesAndLikelihoods) {
+  var loArray = [];
 
   for (var key in outcomesAndLikelihoods) {
     var probability = outcomesAndLikelihoods[key];
-    var start = endOfLastUsedRange + 1;
-    var endOfNewRange = start + probability - 1;
-    rangesAndOutcomes.push([[start, endOfNewRange], key]);
-
-    endOfLastUsedRange = endOfNewRange;
+    loArray.push([probability, key]);
   }
 
-  return rangesAndOutcomes;
+  return loArray;
+}
+
+function compareLikelihoodSizeInPairsDesc(pairA, pairB) {
+  return pairA[0] > pairB[0] ? -1 : 1;
 }
 
 // Picks randomly from an array.

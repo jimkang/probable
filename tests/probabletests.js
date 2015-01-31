@@ -13,9 +13,9 @@ var settings = {
     [[96, 100], 'c']
   ],
   rangeTableBParams: {
-    failure: 30,
     success: 20,
-    doover: 5
+    doover: 5,
+    failure: 30
   }
 };
 
@@ -233,6 +233,30 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
       }
 
       testDone();
+    }
+  );
+});
+
+suite('convertDictToRangesAndOutcomePairs', function convertSuite() {
+  test('should return an array of arrays, sorted by size', 
+    function convertTest() {
+      var pairs = probable.convertDictToRangesAndOutcomePairs(
+        {
+          second: 25,
+          first: 50,
+          fourth: 10,
+          third: 20
+        }
+      );
+
+      assert.deepEqual(pairs,
+        [
+          [[0, 49], 'first'],
+          [[50, 74], 'second'],
+          [[75, 94], 'third'],
+          [[95, 104], 'fourth']
+        ]
+      );
     }
   );
 });
