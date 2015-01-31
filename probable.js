@@ -68,13 +68,27 @@ function outcomeAtIndexFromTable(index) {
 // and the *size* of the probability range that they occupy, this function 
 // generates the ranges for createRangeTable.
 // 
+function createRangeTableFromDict(outcomesAndLikelihoods) {
+  return createRangeTable(
+    convertDictToRangesAndOutcomePairs(outcomesAndLikelihoods)
+  );
+}
+
 // outcomesAndLikelihoods format: 
 // {
 //   failure: 30,
 //   success: 20,
 //   doover: 5
 // }
-function createRangeTableFromDict(outcomesAndLikelihoods) {
+//
+// Returns an array in this kind of format:
+// [
+//  [[0, 80], 'a'],
+//  [[81, 95], 'b'],
+//  [[96, 100], 'c']
+// ]
+
+function convertDictToRangesAndOutcomePairs(outcomesAndLikelihoods) {
   var endOfLastUsedRange = -1;
   var rangesAndOutcomes = [];
 
@@ -86,7 +100,8 @@ function createRangeTableFromDict(outcomesAndLikelihoods) {
 
     endOfLastUsedRange = endOfNewRange;
   }
-  return createRangeTable(rangesAndOutcomes);
+
+  return rangesAndOutcomes;
 }
 
 // Picks randomly from an array.
@@ -124,6 +139,7 @@ return {
   rollDie: rollDie,
   createRangeTable: createRangeTable,
   createRangeTableFromDict: createRangeTableFromDict,
+  convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
   pickFromArray: pickFromArray,
   crossArrays: crossArrays,
   getCartesianProduct: getCartesianProduct
