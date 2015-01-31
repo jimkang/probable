@@ -199,6 +199,8 @@ suite('createRangeTable', function createRangeTableSuite() {
       // TODO: Make sure the outcome distribution is reasonable.
     }
 
+    assert.equal(table.length, 101);
+
     testDone();
   });
 });
