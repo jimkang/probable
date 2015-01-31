@@ -25,6 +25,21 @@
 		</dd>
 
 		<dt>
+			probable.rollDie
+		</dt>
+		<dd>
+			<div>
+				<label for="roll-die-size">Size of roll</label>
+				<input id="roll-die-size" value="20"></input>
+				<button id="roll-die">Roll Die</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<div id="roll-die-outcome" class="outcome"></div>
+			</div>
+		</dd>
+		<dt>
 			probable.pickFromArray
 		</dt>
 		<dd>
@@ -94,6 +109,14 @@ document.querySelector('#roll').onclick = function onRollClick() {
 	var rollSize = +document.querySelector('#roll-size').value;
 	var outcomeEl = document.querySelector('#roll-outcome');
 	outcomeEl.innerText = probable.roll(rollSize);
+	outcomeEl.parentElement.classList.add('revealed');
+};
+
+
+document.querySelector('#roll-die').onclick = function onRollDieClick() {
+	var rollSize = +document.querySelector('#roll-die-size').value;
+	var outcomeEl = document.querySelector('#roll-die-outcome');
+	outcomeEl.innerText = probable.rollDie(rollSize);
 	outcomeEl.parentElement.classList.add('revealed');
 };
 
