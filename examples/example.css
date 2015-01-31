@@ -1,15 +1,16 @@
 body {
-  background-color: #B12E48;
+  background-color: #FAF9F7;
   margin-top: 0.5em;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: 20px;
+  color: rgba(44, 44, 44, 0.75);
+  font-family: futura, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
 }
 
 a {
   text-decoration: none;
   font-weight: bold;
-  color: white;
+  color: rgb(56, 56, 56);
+  font-size: larger;
 }
 
 .explanation {
@@ -19,8 +20,11 @@ a {
   padding: 1em;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
 dl {
-  width: 800px;
 }
 
 @media all and (max-width: 586px) {
@@ -32,8 +36,8 @@ dl {
 
 dt {
   font-family: futura, 'Helvetica Neue', sans-serif;
-  color: #fff;
-  font-size: 36px;
+  color: #525252;
+  font-size: x-large;
   margin-left: 0.5em;
 }
 
@@ -44,33 +48,35 @@ dd {
 }
 
 input {
-  font-size: 36px;
+  font-size: larger;
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   padding-top: 0.2em;
   padding-bottom: 0.2em;
   padding-left: 0.2em;
   padding-right: 0.2em;
-  border-radius: 0.25em;
+  /* border-radius: 0.25em; */
   margin-top: 0.3em;
+  min-width: 300px;
 }
 
 button {
   font-family: futura, 'Helvetica Neue', sans-serif;
-  font-size: 36px;
-  color: hsla(226, 76%, 49%, 0.75);
-  background-color: hsla(0, 0%, 100%, 0.8);
-  border: 0;
+  font-size: larger;
+  color: hsla(0, 100%, 100%, 1);
+  background-color: hsla(0, 0%, 35%, 1.0);
+  border: 2px #ccc solid;
   border-radius: 0.25em;
   
-  width: 100%;
+  /* width: 100%; */
   text-transform: uppercase;
+  margin-top: 0.5em;
 }
 
 .outcome {
   border: 2px hsla(0, 100%, 100%, 0.37) dotted;
   font-family: futura, "Helvetica Neue", sans-serif;
-  font-size: 48px;
+  /* font-size: 48px; */
   padding-left: 0.25em;
   padding-right: 0.25em;
   /* margin-top: 0.25em; */
@@ -81,6 +87,9 @@ button {
 .outcome-container {
   opacity: 0;
   margin-top: 1.5em;
+  border: 1px dashed hsl(0, 0%, 80%);
+  padding: 1em;
+  border-radius: 0.5em;
 }
 
 .revealed {
