@@ -1,0 +1,178 @@
+<html>
+<head>
+	<title>Probability distribution</title>
+	<link rel="stylesheet" type="text/css" href="example.css"></link>
+</head>
+<body>
+	<div>
+		<p>
+			Here are some tests you can run to check out <a href="https://github.com/jimkang/probable">probable.js</a>'s probability distribution. These tests run the rollDie method, which uses <code>Math.floor(Math.random() * sides</code>. That does have some bias, but not enough to affect the applications for which probable is used. See for yourself.
+		</p>
+		<p>
+			If you have an interest in the fairness of <a href="https://twitter.com/smidgeodice">Smidgeo Dice</a>, it's best to run these tests in Chrome. Chrome executes JavaScript with V8, the same JavaScript engine that runs Node, which is what Smidgeo Dice runs probable on.
+		</p>
+	</div>	
+
+	<dl>
+		<dt>
+			1d20 <code>probable.rollDie(20)</code> 200,000 times.
+		</dt>
+		<dd id="go-d20">
+			<div>
+				<button>Go</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<table class="outcome">
+				</table>
+				<div class="summary">
+				</div>
+			</div>
+		</dd>
+
+
+		<dt>
+			1d100 <code>probable.rollDie(100)</code> 1,000,000 times.
+		</dt>
+		<dd id="go-d100">
+			<div>
+				<button>Go</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<table class="outcome">
+				</table>
+				<div class="summary">
+				</div>
+			</div>
+		</dd>
+
+
+		<dt>
+			1d4 <code>probable.rollDie(4)</code> 40,000 times.
+		</dt>
+		<dd id="go-d4">
+			<div>
+				<button>Go</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<table class="outcome">
+				</table>
+				<div class="summary">
+				</div>
+			</div>
+		</dd>
+	</dl>
+
+
+		<dt>
+			3d6 <code>probable.rollDie(4)</code> 180,000 times.
+		</dt>
+		<dd id="go-3d6">
+			<div>
+				<button>Go</button>
+			</div>
+
+			<div class="outcome-container">
+				<div>Outcome</div>
+				<table class="outcome">
+				</table>
+				<div class="summary">
+				</div>
+			</div>
+		</dd>
+	</dl>
+
+<script src="../probable.js"></script>
+<script>
+
+function setUpTestRun(rootId, rollFunction, numberOfRolls) {
+	document.querySelector('#' + rootId  + ' button').onclick = 
+	function onGoClick() {
+		var outcomeEl = document.querySelector('#' + rootId + ' .outcome');
+
+		var rollCounts = {};
+		var total = 0;
+
+		for (var i = 0; i < numberOfRolls; ++i) {
+			var outcome = rollFunction();
+			if (outcome in rollCounts) {
+				rollCounts[outcome] = rollCounts[outcome] + 1;
+			}
+			else {
+				rollCounts[outcome] = 1;
+			}
+			total += outcome;
+		}
+
+		clearTable(outcomeEl);
+		fillTableWithRollsAndCounts(outcomeEl, rollCounts);
+		document.querySelector('#' + rootId + ' .summary').innerText = 'Average: ' + 
+			total/(numberOfRolls * 1.0);
+
+		outcomeEl.parentElement.classList.add('revealed');
+	};
+}
+
+function addTableRow(table) {
+	var tr = document.createElement('tr');
+	table.appendChild(tr);
+	return tr;
+}
+
+function addTableCell(row) {
+	var td = document.createElement('td');
+	row.appendChild(td);
+	return td;
+}
+
+function fillTableWithRollsAndCounts(table, rollCounts) {
+	for (var roll in rollCounts) {
+		var row = addTableRow(table);
+		var rollCell = addTableCell(row);
+		var outcomeCell = addTableCell(row);
+		rollCell.innerText = roll;
+		outcomeCell.innerText = rollCounts[roll];
+	}
+}
+
+function clearTable(table) {
+	var rows = [];
+	for (var i = 0; i < table.children.length; ++i) {
+		rows.push(table.children[i]);
+	}
+	rows.forEach(function remove(row) {
+		table.removeChild(row);
+	});
+}
+
+function rollD20() {
+	return probable.rollDie(20);
+}
+
+function rollD100() {
+	return probable.rollDie(100);
+}
+
+function rollD4() {
+	return probable.rollDie(4);
+}
+
+function roll3D6() {
+	return probable.rollDie(6) + probable.rollDie(6) + probable.rollDie(6);
+}
+
+setUpTestRun('go-d20', rollD20, 200000);
+setUpTestRun('go-d100', rollD100, 1000000);
+setUpTestRun('go-d4', rollD4, 40000);
+setUpTestRun('go-3d6', roll3D6, 180000);
+
+</script>
+
+
+</body>
+</html>

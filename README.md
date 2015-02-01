@@ -5,6 +5,8 @@ probable is a set of utilities for selecting things at random, including setting
 
 Here is an [example](http://jimkang.com/probable/examples/browser.html).
 
+If you want to check out the level of randomness of probable, [you can have it roll some dice](http://jimkang.com/probable/examples/probabilitydist.html).
+
 Usage
 -----
 
