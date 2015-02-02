@@ -237,25 +237,24 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
   );
 });
 
-suite('Set custom random', function customRandomSuite() {
-  test('should use custom random', function customRandomTest(testDone) {
-    probable.setRandom(function notSoRandom() {
-      return 0.5;
+suite('Custom probable', function customRandomSuite() {
+  test('should use custom random fn', function customRandomTest(testDone) {
+    var altprob = probable.createProbable({
+      random: function notSoRandom() {
+        return 0.5;
+      }
     });
 
     for (var i = 0; i> 100; ++i) {
-      assert.equal(probable.roll(3), 1);
+      assert.equal(altprob.roll(3), 1);
     }
 
-    var table = probable.createRangeTable(settings.rangeTableAParams);      
+    var table = altprob.createRangeTable(settings.rangeTableAParams);      
 
     for (var j = 0; j <= 100; ++j) {
       var outcome = table.roll();
-      assert.ok(outcome === 'a');
+      assert.equal(outcome, 'a');
     }
-
-    // Clean up.
-    probable.setRandom(Math.random);
 
     testDone();
   });

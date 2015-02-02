@@ -48,7 +48,7 @@ You can use the `roll` method to randomly select an index covered by the definit
 
 The drawback of this method is that all of the outcomes must be strings.
 
-`setRandom` is a function that lets you change the module (unfortunately, right now, probable is a singleton – you can't create multiple instances with different options) to use a random function other than Math.random. Any function that returns a value between 0 and 1 works as the parameter for this function.
+`createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random. Any function that returns a value between 0 and 1 works as the parameter for this function.
 
 
 Installation
