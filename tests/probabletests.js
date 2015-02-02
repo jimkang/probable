@@ -237,6 +237,31 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
   );
 });
 
+suite('Set custom random', function customRandomSuite() {
+  test('should use custom random', function customRandomTest(testDone) {
+    probable.setRandom(function notSoRandom() {
+      return 0.5;
+    });
+
+    for (var i = 0; i> 100; ++i) {
+      assert.equal(probable.roll(3), 1);
+    }
+
+    var table = probable.createRangeTable(settings.rangeTableAParams);      
+
+    for (var j = 0; j <= 100; ++j) {
+      var outcome = table.roll();
+      assert.ok(outcome === 'a');
+    }
+
+    // Clean up.
+    probable.setRandom(Math.random);
+
+    testDone();
+  });
+});
+
+
 suite('convertDictToRangesAndOutcomePairs', function convertSuite() {
   test('should return an array of arrays, sorted by size', 
     function convertTest() {

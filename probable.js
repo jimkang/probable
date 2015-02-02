@@ -1,10 +1,16 @@
 var probable = (function probableScope() {
 
+var random = Math.random;
+
+function setRandom(randomFn) {
+  random = randomFn;
+}
+
 // Rolls a die.
 // ~~ is faster than Math.floor but doesn't work as a floor with very high 
 // numbers.
 function roll(sides) {
-  return Math.floor(Math.random() * sides);
+  return Math.floor(random() * sides);
 }
 
 // This is like `roll`, but it is 1-based, like traditional dice.
@@ -163,7 +169,8 @@ return {
   convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
   pickFromArray: pickFromArray,
   crossArrays: crossArrays,
-  getCartesianProduct: getCartesianProduct
+  getCartesianProduct: getCartesianProduct,
+  setRandom: setRandom
 };
 
 }());
