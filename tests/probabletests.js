@@ -3,6 +3,7 @@
 
 var assert = require('assert');
 var probable = require('../probable');
+var seedrandom = require('seedrandom');
 
 // var _ = require('lodash');
 
@@ -419,4 +420,20 @@ test('should get the Cartesian product of four arrays',
     }
   );  
 
+});
+
+suite('Shuffle', function shuffleSuite() {
+  test('should shuffle', function shuffleTest(testDone) {
+    var prob = probable.createProbable({
+      random: seedrandom('shuffleupagus')
+    });
+
+    var shuffled = prob.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    assert.deepEqual(
+      shuffled,
+      [5, 1, 12, 10, 6, 7, 2, 8, 4, 3, 11, 9, 0]
+    );
+
+    testDone();
+  });
 });

@@ -160,7 +160,20 @@ function createProbable(opts) {
     return arrays.slice(1).reduce(crossArrays, arrays[0]);
   }
 
-
+  // From Underscore.js, except we are using the random function specified in 
+  // our constructor instead of Math.random, necessarily.
+  function shuffle(array) {
+    var length = array.length;
+    var shuffled = Array(length);
+    for (var index = 0, rand; index < length; index++) {
+      rand = roll(index + 1);
+      if (rand !== index) {
+        shuffled[index] = shuffled[rand];
+      }
+      shuffled[rand] = array[index];
+    }
+    return shuffled;
+  }
 
   return {
     roll: roll,
@@ -170,7 +183,8 @@ function createProbable(opts) {
     convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
     pickFromArray: pickFromArray,
     crossArrays: crossArrays,
-    getCartesianProduct: getCartesianProduct
+    getCartesianProduct: getCartesianProduct,
+    shuffle: shuffle
   };
 }
 
