@@ -32,31 +32,30 @@ function createProbable(opts) {
   // ]
   // 
   function createRangeTable(rangesAndOutcomePairs) {
-    var rangeTable = {
-      rangesAndOutcomes: rangesAndOutcomePairs,
-      length: 0
+    var rangesAndOutcomes = rangesAndOutcomePairs;
+    var length = rangesAndOutcomes[rangesAndOutcomes.length - 1][0][1]
+      - rangesAndOutcomes[0][0][0] + 1;
+
+    function localOutcomeAtIndex(index) {
+      return outcomeAtIndex(rangesAndOutcomes, index);
+    }
+
+    function rollOnTable() {
+      return localOutcomeAtIndex(roll(length));
+    }
+
+    return {
+      outcomeAtIndex: localOutcomeAtIndex,
+      roll: rollOnTable,
+      length: length
     };
-
-    rangeTable.length = 
-      rangeTable.rangesAndOutcomes[rangeTable.rangesAndOutcomes.length - 1][0][1] - 
-        rangeTable.rangesAndOutcomes[0][0][0] + 1;
-
-    rangeTable.outcomeAtIndex = outcomeAtIndexFromTable.bind(rangeTable);
-    rangeTable.roll = randomOutcomeFromTable.bind(rangeTable);
-
-    return rangeTable;
-  }
-
-  // Selects an outcome at random that respects the probability ranges defined 
-  // in the table.
-  function randomOutcomeFromTable() {
-    return this.outcomeAtIndex(roll(this.length));
   }
 
   // Looks up what outcome corresponds to the given index.
-  function outcomeAtIndexFromTable(index) {
+  function outcomeAtIndex(rangesAndOutcomes, index) {
     var outcome;
     index = (+index);
+
     function checkRange(rangeOutcomePair) {
       var range = rangeOutcomePair[0];
       if (index >= range[0] && index <= range[1]) {
@@ -65,7 +64,7 @@ function createProbable(opts) {
       }
     }
 
-    this.rangesAndOutcomes.forEach(checkRange);
+    rangesAndOutcomes.forEach(checkRange);
     return outcome;
   }
 

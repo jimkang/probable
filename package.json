@@ -1,6 +1,6 @@
 {
   "name": "probable",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Utilities for creating and using probability tables.",
   "main": "probable.js",
   "scripts": {
@@ -18,6 +18,8 @@
   "author": "Jim Kang",
   "license": "ISC",
   "devDependencies": {
-    "seedrandom": "^2.3.11"
+    "immutable": "^3.7.2",
+    "seedrandom": "^2.3.11",
+    "tape": "^4.0.0"
   }
 }
