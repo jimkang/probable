@@ -132,6 +132,66 @@ function createProbable(opts) {
     return pairA[0] > pairB[0] ? -1 : 1;
   }
 
+  //  [[0, 80], 'a'],
+  //  [[81, 95], 'b'],
+  //  [[96, 100], 'c']
+
+  // Table defs will be objects like this:
+  // {
+  //   '0-24': 'Bulbasaur',
+  //   '25-66': 'Squirtle',
+  //   '67-99': 'Charmander'
+  // }
+  // The values can be other other objects, in which case those outcomes are
+  // considered recursive rolls. e.g.
+  //
+  // {
+  //   '0-39': {
+  //     '0-24': 'Bulbasaur',
+  //     '25-66': 'Squirtle',
+  //     '67-99': 'Charmander'
+  //   },
+  //   '40-55': 'Human',
+  //   '56-99': 'Rock'
+  // }
+  //
+  // When 0-39 is rolled on the outer table, another roll is made on that inner
+  // table.
+  //
+  // It will not detect cycles.
+
+  function createTableFromDef(def) {
+    var rangeOutcomePairs = rangeOutcomePairsFromDef(def);
+    return createRangeTable(rangeOutcomePairs);
+  }
+
+  function rangeOutcomePairsFromDef(def) {
+    var rangeOutcomePairs = [];
+    for (var rangeString in def) {
+      var range = rangeStringToRange(rangeString);
+      var outcome = def[rangeString];
+      if (typeof outcome === 'object') {
+        // Recurse.
+        var subtable = createTableFromDef(outcome);
+        if (typeof subtable.roll == 'function') {
+          outcome = subtable.roll;
+        }
+      }
+      rangeOutcomePairs.push([range, outcome]);
+    }
+    return rangeOutcomePairs;    
+  }
+
+  function rangeStringToRange(s) {
+    var bounds = s.split('-');
+    if (bounds.length > 2) {
+      return undefined;
+    }
+    else {
+      return [+bounds[0], +bounds[1]];
+    }
+  }
+
   // Picks randomly from an array.
   function pickFromArray(array, emptyArrayDefault) {
     if (!array || typeof array.length !== 'number' || array.length < 1) {
@@ -182,6 +242,7 @@ function createProbable(opts) {
     rollDie: rollDie,
     createRangeTable: createRangeTable,
     createRangeTableFromDict: createRangeTableFromDict,
+    createTableFromDef: createTableFromDef,
     convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
     pickFromArray: pickFromArray,
     crossArrays: crossArrays,
