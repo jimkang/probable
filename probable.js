@@ -41,7 +41,13 @@ function createProbable(opts) {
     }
 
     function rollOnTable() {
-      return curriedOutcomeAtIndex(roll(length));
+      var outcome = curriedOutcomeAtIndex(roll(length));
+      if (typeof outcome === 'function') {
+        return outcome();
+      }
+      else {
+        return outcome;
+      }
     }
 
     return {
