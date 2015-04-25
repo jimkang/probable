@@ -36,36 +36,33 @@ function createProbable(opts) {
     var length = rangesAndOutcomes[rangesAndOutcomes.length - 1][0][1]
       - rangesAndOutcomes[0][0][0] + 1;
 
-    function localOutcomeAtIndex(index) {
+    function curriedOutcomeAtIndex(index) {
       return outcomeAtIndex(rangesAndOutcomes, index);
     }
 
     function rollOnTable() {
-      return localOutcomeAtIndex(roll(length));
+      return curriedOutcomeAtIndex(roll(length));
     }
 
     return {
-      outcomeAtIndex: localOutcomeAtIndex,
+      outcomeAtIndex: curriedOutcomeAtIndex,
       roll: rollOnTable,
       length: length
     };
   }
 
-  // Looks up what outcome corresponds to the given index.
+  // Looks up what outcome corresponds to the given index. Returns undefined 
+  // if the index is not inside any range.
   function outcomeAtIndex(rangesAndOutcomes, index) {
-    var outcome;
     index = (+index);
 
-    function checkRange(rangeOutcomePair) {
+    for (var i = 0; i < rangesAndOutcomes.length; ++i) {
+      var rangeOutcomePair = rangesAndOutcomes[i];
       var range = rangeOutcomePair[0];
       if (index >= range[0] && index <= range[1]) {
-        outcome = rangeOutcomePair[1];
-        return false;
+        return rangeOutcomePair[1];
       }
     }
-
-    rangesAndOutcomes.forEach(checkRange);
-    return outcome;
   }
 
   // A shorthand way to create a range table object. Given a hash of outcomes 
