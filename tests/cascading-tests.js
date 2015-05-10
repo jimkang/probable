@@ -55,7 +55,12 @@ test('cascading createTableFromDef', function cascadingDefs(t) {
 
   var subtableDef = {
     '0-39': subSubtableDef,
-    '40-55': 'Human',
+    '40-55': [
+      'Human',
+      'Dwarf',
+      'Elf',
+      'Illithid'
+    ],
     '56-99': 'Rock'
   };
 
@@ -67,7 +72,7 @@ test('cascading createTableFromDef', function cascadingDefs(t) {
 
   var resultsForSeeds = {
     'cascading createTableFromDef': 'a',
-    'createTableFromDef': 'Human',
+    'createTableFromDef': 'Elf',
     'c': 'Squirtle'
   };
 

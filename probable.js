@@ -171,10 +171,15 @@ function createProbable(opts) {
       var range = rangeStringToRange(rangeString);
       var outcome = def[rangeString];
       if (typeof outcome === 'object') {
-        // Recurse.
-        var subtable = createTableFromDef(outcome);
-        if (typeof subtable.roll == 'function') {
-          outcome = subtable.roll;
+        if (Array.isArray(outcome)) {
+          outcome = createCustomPickFromArray(outcome);
+        }
+        else {
+          // Recurse.
+          var subtable = createTableFromDef(outcome);
+          if (typeof subtable.roll == 'function') {
+            outcome = subtable.roll;
+          }
         }
       }
       rangeOutcomePairs.push([range, outcome]);
@@ -200,6 +205,12 @@ function createProbable(opts) {
     else {
       return array[roll(array.length)];
     }
+  }
+
+  function createCustomPickFromArray(array, emptyArrayDefault) {
+    return function pick() {
+      return pickFromArray(array, emptyArrayDefault);
+    };
   }
 
   // Combines every element in A with every element in B.
