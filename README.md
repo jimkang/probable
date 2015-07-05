@@ -48,8 +48,9 @@ You can use the `roll` method to randomly select an index covered by the definit
 
 The drawback of this method is that all of the outcomes must be strings.
 
-`createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random. Any function that returns a value between 0 and 1 works as the parameter for this function.
+`createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random, such as something constructed with [seedrandom](https://github.com/davidbau/seedrandom). Any function that returns a value between 0 and 1 works as the parameter for this function.
 
+`shuffle` and `sample` are like the [shuffle](http://underscorejs.org/#shuffle) and [sample](http://underscorejs.org/#sample) from Underscore, except that it uses whatever random function you provided to `createProbable` instead of `Math.random`.
 
 Installation
 ------------
@@ -65,7 +66,11 @@ First, install mocha if you don't have it installed already:
 
 Then:
 
-    npm test
+    make test
+
+Run `probable.sample` tests (~11 seconds on a 2015 MBP) with:
+
+    node tests/sample-tests.js
 
 License
 -------

@@ -248,6 +248,10 @@ function createProbable(opts) {
     return shuffled;
   }
 
+  function sample(array, sampleSize) {
+    return shuffle(array).slice(0, sampleSize);
+  }
+
   return {
     roll: roll,
     rollDie: rollDie,
@@ -258,7 +262,8 @@ function createProbable(opts) {
     pickFromArray: pickFromArray,
     crossArrays: crossArrays,
     getCartesianProduct: getCartesianProduct,
-    shuffle: shuffle
+    shuffle: shuffle,
+    sample: sample
   };
 }
 
