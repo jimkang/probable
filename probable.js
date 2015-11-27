@@ -50,10 +50,15 @@ function createProbable(opts) {
       }
     }
 
+    function getRangesAndOutcomesArray() {
+      return rangesAndOutcomes;
+    }
+
     return {
       outcomeAtIndex: curriedOutcomeAtIndex,
       roll: rollOnTable,
-      length: length
+      length: length,
+      getRangesAndOutcomesArray: getRangesAndOutcomesArray
     };
   }
 
@@ -191,6 +196,9 @@ function createProbable(opts) {
     var bounds = s.split('-');
     if (bounds.length > 2) {
       return undefined;
+    }
+    if (bounds.length === 1) {
+      return [+s, +s];
     }
     else {
       return [+bounds[0], +bounds[1]];

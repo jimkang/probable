@@ -48,6 +48,41 @@ You can use the `roll` method to randomly select an index covered by the definit
 
 The drawback of this method is that all of the outcomes must be strings.
 
+`createTableFromDef` is another wrapper for `createRangeTable` that takes a table definition that looks like this:
+
+    {
+      '0': 'Nothing',
+      '1-2': 'Poison gas',
+      '3': 'Ruby',
+      '4': 'Bedbugs',
+      '5-7': 'Bag of gold'
+    }
+
+Where the ranges are the keys of the object (e.g. '1-2') and the values are the outcomes. So, in this case, probable will roll an 8-sided die (with "faces" 0-7) and if the outcome is a 1-2, the outcome is 'Poison gas'. If it is a 4, the outcome is 'Bedbugs'.
+
+These tables can cascade like so:
+
+    {
+      '0-20': 'a',
+      '21-95': {
+        '0-39': {
+          '0-24': 'Bulbasaur',
+          '25-66': 'Squirtle',
+          '67-99': 'Charmander'
+        },
+        '40-55': [
+          'Human',
+          'Dwarf',
+          'Elf',
+          'Illithid'
+        ],
+        '56-99': 'Rock'
+      },
+      '96-100': 'c'
+    };
+
+Here, if a 25 is rolled, probable then will roll on the subtable defined in the outcome. If it rolls a 70, the outcome will be 'Rock'. If it rolls a 35 on the subtable, the outcome is yet another subtable, so it will roll again. Let's say it rolls a 50 for that. The ultimate outcome will then be 'Squirtle.'
+
 `createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random, such as something constructed with [seedrandom](https://github.com/davidbau/seedrandom). Any function that returns a value between 0 and 1 works as the parameter for this function.
 
 `shuffle` and `sample` are like the [shuffle](http://underscorejs.org/#shuffle) and [sample](http://underscorejs.org/#sample) from Underscore, except that it uses whatever random function you provided to `createProbable` instead of `Math.random`.
