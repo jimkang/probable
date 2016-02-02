@@ -40,9 +40,13 @@ function createProbable(opts) {
       return outcomeAtIndex(rangesAndOutcomes, index);
     }
 
-    function rollOnTable() {
+    function probable_rollOnTable() {
       var outcome = curriedOutcomeAtIndex(roll(length));
-      if (typeof outcome === 'function') {
+
+      if (typeof outcome === 'function' &&
+        (outcome.name === 'probable_rollOnTable' ||
+        outcome.name === 'probable_pick')) {
+
         return outcome();
       }
       else {
@@ -56,7 +60,7 @@ function createProbable(opts) {
 
     return {
       outcomeAtIndex: curriedOutcomeAtIndex,
-      roll: rollOnTable,
+      roll: probable_rollOnTable,
       length: length,
       getRangesAndOutcomesArray: getRangesAndOutcomesArray
     };
@@ -216,7 +220,7 @@ function createProbable(opts) {
   }
 
   function createCustomPickFromArray(array, emptyArrayDefault) {
-    return function pick() {
+    return function probable_pick() {
       return pickFromArray(array, emptyArrayDefault);
     };
   }
