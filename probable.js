@@ -193,7 +193,12 @@ function createProbable(opts) {
       }
       rangeOutcomePairs.push([range, outcome]);
     }
-    return rangeOutcomePairs;    
+
+    return rangeOutcomePairs.sort(compareStartOfRangeAsc);
+  }
+
+  function compareStartOfRangeAsc(rangeOutcomePairA, rangeOutcomePairB) {
+    return rangeOutcomePairA[0][0] < rangeOutcomePairB[0][0] ? -1 : 1;
   }
 
   function rangeStringToRange(s) {
