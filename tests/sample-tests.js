@@ -1,3 +1,5 @@
+/* global process */
+
 var test = require('tape');
 
 var createProbable = require('../probable').createProbable;

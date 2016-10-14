@@ -220,7 +220,6 @@ function createProbable(opts) {
   }
 
   function rangeOutcomePairsFromSizesDef(def) {
-    var rangeOutcomePairs = [];
     var nextLowerBound = 0;
 
     return def.map(sizeOutcomePairToRangeOutcomePair);

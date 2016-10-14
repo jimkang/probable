@@ -3,5 +3,8 @@ test:
 	node tests/cascading-tests.js
 	node tests/parse-tests.js
 
+lint:
+	./node_modules/.bin/eslint .
+
 pushall:
 	git push origin master && npm publish

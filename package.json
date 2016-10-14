@@ -18,6 +18,7 @@
   "author": "Jim Kang",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^3.7.1",
     "immutable": "^3.7.2",
     "seedrandom": "^2.3.11",
     "tape": "^4.0.0"

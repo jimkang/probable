@@ -142,17 +142,15 @@ Installation
 Tests
 -----
 
-First, install mocha if you don't have it installed already:
-
-    npm install -g mocha
-
-Then:
-
     make test
 
 Run `probable.sample` tests (~11 seconds on a 2015 MBP) with:
 
     node tests/sample-tests.js
+
+Lint:
+
+    make lint
 
 License
 -------

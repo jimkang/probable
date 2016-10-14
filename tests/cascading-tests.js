@@ -64,7 +64,9 @@ var easyCreateTestCases = [
       ];
       var subtableDef = [
         [40, subSubtableDef],
-        [15, [
+        [
+          15,
+          [
             'Human',
             'Dwarf',
             'Elf',
@@ -118,7 +120,7 @@ function runEasyCreateTest(testCase) {
   function easyCreateTest(t) {
     t.plan(3);
 
-    for (seed in testCase.resultsForSeeds) {
+    for (var seed in testCase.resultsForSeeds) {
       var probable = createProbable({
         random: seedrandom(seed)
       });

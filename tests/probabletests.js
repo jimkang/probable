@@ -1,3 +1,5 @@
+/* global suite test */
+
 // These tests need to be run with the "--ui tdd" switch.
 // They should be run after the server (app.js) has been started.
 
@@ -19,8 +21,6 @@ var settings = {
     failure: 30
   }
 };
-
-var utils = {};
 
 suite('roll', function rollSuite() {
   test('should roll results that are within 0 and 5.', 
@@ -181,9 +181,10 @@ suite('createRangeTable', function createRangeTableSuite() {
     var table = probable.createRangeTable(settings.rangeTableAParams);
     assert.equal(typeof table, 'object');
     assert.equal(table.length, 101);
+    var outcome;
 
     for (var i = 0; i <= 100; ++i) {
-      var outcome = table.outcomeAtIndex(i);
+      outcome = table.outcomeAtIndex(i);
       var expectedValue = 'a';
       if (i > 80 && i < 96) {
         expectedValue = 'b';
@@ -195,7 +196,7 @@ suite('createRangeTable', function createRangeTableSuite() {
     }
 
     for (var j = 0; j <= 100; ++j) {
-      var outcome = table.roll();
+      outcome = table.roll();
       assert.ok(outcome === 'a' || outcome === 'b' || outcome === 'c');
       // TODO: Make sure the outcome distribution is reasonable.
     }
@@ -210,12 +211,13 @@ suite('createRangeTable', function createRangeTableSuite() {
 suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
   test('should create a rangeTable from a dict', 
     function createRangeTableFromDictTest(testDone) {
+      var outcome;
       var table = probable.createRangeTableFromDict(settings.rangeTableBParams);
       assert.equal(typeof table, 'object');
       assert.equal(table.length, 55);
 
       for (var i = 0; i < 55; ++i) {
-        var outcome = table.outcomeAtIndex(i);
+        outcome = table.outcomeAtIndex(i);
         var expectedValue = 'failure';
         if (i > 29 && i < 50) {
           expectedValue = 'success';
@@ -227,7 +229,7 @@ suite('createRangeTableFromDict', function createRangeTableFromDictSuite() {
       }
 
       for (var j = 0; j <= 100; ++j) {
-        var outcome = table.roll();
+        outcome = table.roll();
         assert.ok(outcome === 'failure' || outcome === 'success' || 
           outcome === 'doover');
         // TODO: Make sure the outcome distribution is reasonable.
@@ -335,7 +337,8 @@ suite('getCartesianProduct', function crossArraysSuite() {
 
   test('should get the Cartesian product of three arrays', 
     function threeArrayCartesianProductTest() {
-      var product = probable.getCartesianProduct([
+      var product = probable.getCartesianProduct(
+        [
           [null, 'a', 'b'],
           ['omega', 'gamma'],
           [null, 1, 2]
@@ -366,14 +369,14 @@ suite('getCartesianProduct', function crossArraysSuite() {
     }
   );
 
-test('should get the Cartesian product of four arrays', 
+  test('should get the Cartesian product of four arrays', 
     function fourArrayCartesianProductTest() {
       var product = probable.getCartesianProduct([
           [null, 'a', 'b'],
           ['omega', 'gamma'],
           [null, 1, 2],
           ['Bonus Cat', 'Dr. Wily']
-        ]);
+      ]);
 
       assert.deepEqual(product,
         [
