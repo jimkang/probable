@@ -52,6 +52,38 @@ var easyCreateTestCases = [
       'createTableFromDef': 'Elf',
       'c': 'Squirtle'
     }
+  },
+
+  {
+    createFnName: 'createTableFromSizes',
+    getOuterTableDef: function getOuterTableDef() {
+      var subSubtableDef = [
+        [25, 'Bulbasaur'],
+        [42, 'Squirtle'],
+        [33, 'Charmander']
+      ];
+      var subtableDef = [
+        [40, subSubtableDef],
+        [15, [
+            'Human',
+            'Dwarf',
+            'Elf',
+            'Illithid'
+          ]
+        ],
+        [44, 'Rock']
+      ];
+      return [
+        [21, 'a'],
+        [75, subtableDef],
+        [5, 'c']
+      ];
+    },
+    resultsForSeeds: {
+      'cascading createTableFromDef': 'a',
+      'createTableFromDef': 'Elf',
+      'c': 'Squirtle'
+    }
   }
 ];
 

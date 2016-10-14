@@ -85,25 +85,50 @@ Here, if a 25 is rolled, probable then will roll on the subtable defined in the 
 
 Another – possibly more convenient – alternative to `createTableFromDef` is wrapper for `createTableFromSizes` that takes a table definition that uses probabilty size instead of fixed ranges:
 
-    {
-      '1': 'Nothing',
-      '2': 'Poison gas',
-      '1': 'Ruby',
-      '1': 'Bedbugs',
-      '5': 'Bag of gold'
-    }
+    [
+      [1, 'Nothing'],
+      [2, 'Poison gas'],
+      [1, 'Ruby'],
+      [1, 'Bedbugs'],
+      [5, 'Bag of gold']
+    ]
 
 Here, 'Bag of gold' is an outcome that's five times as likely as 'Nothing', 'Ruby', and 'Bedbugs'. This way of defining tables has the advantage that changing the likelihood of one outcome does not mean that have to update ranges for every outcome that follows it. e.g. If we change our minds and decide that 'Ruby' should be three times as likely as 'Nothing', we only have to change the entry for 'Ruby', like so:
 
-    {
-      '1': 'Nothing',
-      '2': 'Poison gas',
-      '3': 'Ruby',
-      '1': 'Bedbugs',
-      '5': 'Bag of gold'
-    }
+    [
+      [1, 'Nothing'],
+      [2, 'Poison gas'],
+      [3, 'Ruby'],
+      [1, 'Bedbugs'],
+      [5, 'Bag of gold']
+    ]
 
 If we were using `createTableFromDef`, we'd have to adjust the ranges for 'Bedbugs' and 'Bag of gold' as well.
+
+There is a limitation to `createTableFromSizes`, however. If an outcome is an array of pairs, and the first element of the pair is number, it will interpret that as nested subtable definition and act accordingly. e.g.
+
+    [
+      [1, 'Nothing'],
+      [2, 'Poison gas'],
+      [3, 'Ruby'],
+      [1, 'Bedbugs'],
+      [
+        5,
+        [
+          [999, 'Bag of gold'],
+          [1, 'One million bags of gold']
+        ]
+      ]
+    ]
+
+Here, if the outer roll is a 9, the outcome will not be:
+
+    [
+      [999, 'Bag of gold'],
+      [1, 'Bag of God']
+    ]
+
+Instead, it will do another roll on what it thinks is a subtable, and the outcome will either be 'Bag of gold' or 'Bag of God'. (Probably just 'Bag of gold', though.)
 
 `createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random, such as something constructed with [seedrandom](https://github.com/davidbau/seedrandom). Any function that returns a value between 0 and 1 works as the parameter for this function.
 

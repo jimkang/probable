@@ -214,6 +214,48 @@ function createProbable(opts) {
     }
   }
 
+  function createTableFromSizes(def) {
+    var rangeOutcomePairs = rangeOutcomePairsFromSizesDef(def);
+    return createRangeTable(rangeOutcomePairs);
+  }
+
+  function rangeOutcomePairsFromSizesDef(def) {
+    var rangeOutcomePairs = [];
+    var nextLowerBound = 0;
+
+    return def.map(sizeOutcomePairToRangeOutcomePair);
+
+    function sizeOutcomePairToRangeOutcomePair(sizeOutcomePair) {
+      var size = sizeOutcomePair[0];
+      var outcome = sizeOutcomePair[1];
+
+      var upperBound = nextLowerBound + size - 1;
+      var range = [nextLowerBound, upperBound];
+      nextLowerBound = upperBound + 1;
+
+      if (Array.isArray(outcome)) {
+        if (objectIsASizeDef(outcome)) {
+          // Recurse.
+          var subtable = createTableFromSizes(outcome);
+          if (typeof subtable.roll == 'function') {
+            outcome = subtable.roll;
+          }
+        }
+        else {
+          outcome = createCustomPickFromArray(outcome);
+        }
+      }
+      return [range, outcome];
+    }
+  }
+
+  // Checks to see if def is a nested array, and if the first element is a pair with
+  // a number as the first element.
+  function objectIsASizeDef(def) {
+    return Array.isArray(def) && def.length > 0 && Array.isArray(def[0]) &&
+      def[0].length === 2 && typeof def[0][0] === 'number';
+  }
+
   // Picks randomly from an array.
   function pickFromArray(array, emptyArrayDefault) {
     if (!array || typeof array.length !== 'number' || array.length < 1) {
@@ -275,6 +317,7 @@ function createProbable(opts) {
     createRangeTable: createRangeTable,
     createRangeTableFromDict: createRangeTableFromDict,
     createTableFromDef: createTableFromDef,
+    createTableFromSizes: createTableFromSizes,
     convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
     pickFromArray: pickFromArray,
     crossArrays: crossArrays,
