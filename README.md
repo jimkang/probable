@@ -83,6 +83,28 @@ These tables can cascade like so:
 
 Here, if a 25 is rolled, probable then will roll on the subtable defined in the outcome. If it rolls a 70, the outcome will be 'Rock'. If it rolls a 35 on the subtable, the outcome is yet another subtable, so it will roll again. Let's say it rolls a 50 for that. The ultimate outcome will then be 'Squirtle.'
 
+Another – possibly more convenient – alternative to `createTableFromDef` is wrapper for `createTableFromSizes` that takes a table definition that uses probabilty size instead of fixed ranges:
+
+    {
+      '1': 'Nothing',
+      '2': 'Poison gas',
+      '1': 'Ruby',
+      '1': 'Bedbugs',
+      '5': 'Bag of gold'
+    }
+
+Here, 'Bag of gold' is an outcome that's five times as likely as 'Nothing', 'Ruby', and 'Bedbugs'. This way of defining tables has the advantage that changing the likelihood of one outcome does not mean that have to update ranges for every outcome that follows it. e.g. If we change our minds and decide that 'Ruby' should be three times as likely as 'Nothing', we only have to change the entry for 'Ruby', like so:
+
+    {
+      '1': 'Nothing',
+      '2': 'Poison gas',
+      '3': 'Ruby',
+      '1': 'Bedbugs',
+      '5': 'Bag of gold'
+    }
+
+If we were using `createTableFromDef`, we'd have to adjust the ranges for 'Bedbugs' and 'Bag of gold' as well.
+
 `createProbable` is a function that lets you create another instance of probable that uses a random function other than Math.random, such as something constructed with [seedrandom](https://github.com/davidbau/seedrandom). Any function that returns a value between 0 and 1 works as the parameter for this function.
 
 `shuffle` and `sample` are like the [shuffle](http://underscorejs.org/#shuffle) and [sample](http://underscorejs.org/#sample) from Underscore, except that it uses whatever random function you provided to `createProbable` instead of `Math.random`.
