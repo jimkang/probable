@@ -1,5 +1,5 @@
 test:
-	mocha --ui tdd tests/probabletests.js
+	./node_modules/.bin/mocha --ui tdd tests/probabletests.js
 	node tests/cascading-tests.js
 	node tests/parse-tests.js
 

@@ -22,6 +22,39 @@ var tableParams = Immutable.Map({
   ]
 });
 
+var easyCreateTestCases = [
+  {
+    createFnName: 'createTableFromDef',
+    getOuterTableDef: function getOuterTableDef() {
+      var subSubtableDef = {
+        '0-24': 'Bulbasaur',
+        '25-66': 'Squirtle',
+        '67-99': 'Charmander'
+      };
+      var subtableDef = {
+        '0-39': subSubtableDef,
+        '40-55': [
+          'Human',
+          'Dwarf',
+          'Elf',
+          'Illithid'
+        ],
+        '56-99': 'Rock'
+      };
+      return {
+        '0-20': 'a',
+        '21-95': subtableDef,
+        '96-100': 'c'
+      };
+    },
+    resultsForSeeds: {
+      'cascading createTableFromDef': 'a',
+      'createTableFromDef': 'Elf',
+      'c': 'Squirtle'
+    }
+  }
+];
+
 test('cascading createRangeTable', function cascadingRangeTable(t) {
   t.plan(1);
 
@@ -44,49 +77,28 @@ test('cascading createRangeTable', function cascadingRangeTable(t) {
   );
 });
 
-test('cascading createTableFromDef', function cascadingDefs(t) {
-  t.plan(3);
 
-  var subSubtableDef = {
-    '0-24': 'Bulbasaur',
-    '25-66': 'Squirtle',
-    '67-99': 'Charmander'
-  };
+easyCreateTestCases.forEach(runEasyCreateTest);
 
-  var subtableDef = {
-    '0-39': subSubtableDef,
-    '40-55': [
-      'Human',
-      'Dwarf',
-      'Elf',
-      'Illithid'
-    ],
-    '56-99': 'Rock'
-  };
+function runEasyCreateTest(testCase) {
+  test('cascading ' + testCase.createFnName, easyCreateTest);
 
-  var outerTableDef = {
-    '0-20': 'a',
-    '21-95': subtableDef,
-    '96-100': 'c'
-  };
+  function easyCreateTest(t) {
+    t.plan(3);
 
-  var resultsForSeeds = {
-    'cascading createTableFromDef': 'a',
-    'createTableFromDef': 'Elf',
-    'c': 'Squirtle'
-  };
+    for (seed in testCase.resultsForSeeds) {
+      var probable = createProbable({
+        random: seedrandom(seed)
+      });
 
-  for (seed in resultsForSeeds) {
-    var probable = createProbable({
-      random: seedrandom(seed)
-    });
+      var outerTable = probable[testCase.createFnName](testCase.getOuterTableDef());
 
-    var outerTable = probable.createTableFromDef(outerTableDef);
-
-    t.equal(
-      outerTable.roll(),
-      resultsForSeeds[seed],
-      'Rolls on subtables as it encounters them.'
-    );
+      t.equal(
+        outerTable.roll(),
+        testCase.resultsForSeeds[seed],
+        'Rolls on subtables as it encounters them.'
+      );
+    }
   }
-});
+}
+
