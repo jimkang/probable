@@ -322,7 +322,8 @@ function createProbable(opts) {
     crossArrays: crossArrays,
     getCartesianProduct: getCartesianProduct,
     shuffle: shuffle,
-    sample: sample
+    sample: sample,
+    randomFn: random
   };
 }
 
