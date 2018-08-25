@@ -20,6 +20,7 @@
   "devDependencies": {
     "eslint": "^3.7.1",
     "immutable": "^3.7.2",
+    "mocha": "^5.2.0",
     "seedrandom": "^2.3.11",
     "tape": "^4.0.0"
   }
