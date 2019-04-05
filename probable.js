@@ -1,8 +1,14 @@
 function createProbable(opts) {
   var random = Math.random;
+  var shouldRecurse = true;
 
-  if (opts && opts.random) {
-    random = opts.random;
+  if (opts) {
+    if (opts.random) {
+      random = opts.random;
+    }
+    if (opts.recurse !== undefined) {
+      shouldRecurse = opts.recurse;
+    }
   }
 
   // Rolls a die.
@@ -184,10 +190,12 @@ function createProbable(opts) {
         if (Array.isArray(outcome)) {
           outcome = createCustomPickFromArray(outcome);
         } else {
-          // Recurse.
-          var subtable = createTableFromDef(outcome);
-          if (typeof subtable.roll == 'function') {
-            outcome = subtable.roll;
+          if (shouldRecurse) {
+            // Recurse.
+            var subtable = createTableFromDef(outcome);
+            if (typeof subtable.roll == 'function') {
+              outcome = subtable.roll;
+            }
           }
         }
       }

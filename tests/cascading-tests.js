@@ -96,6 +96,8 @@ test('cascading createRangeTable', function cascadingRangeTable(t) {
   );
 });
 
+test('Do not recurse', doNotRecurseTest);
+
 easyCreateTestCases.forEach(runEasyCreateTest);
 
 function runEasyCreateTest(testCase) {
@@ -120,4 +122,32 @@ function runEasyCreateTest(testCase) {
       );
     }
   }
+}
+
+function doNotRecurseTest(t) {
+  var probable = createProbable({
+    random: seedrandom('do-not-recurse'),
+    recurse: false
+  });
+
+  var outerTable = probable.createTableFromDef(
+    easyCreateTestCases[0].getOuterTableDef()
+  );
+  var result = outerTable.roll();
+  console.log('result', result);
+
+  t.deepEqual(
+    result,
+    {
+      '0-39': {
+        '0-24': 'Bulbasaur',
+        '25-66': 'Squirtle',
+        '67-99': 'Charmander'
+      },
+      '40-55': ['Human', 'Dwarf', 'Elf', 'Illithid'],
+      '56-99': 'Rock'
+    },
+    'DOES NOT roll on subtables as it encounters them.'
+  );
+  t.end();
 }
