@@ -6,7 +6,7 @@ function createProbable(opts) {
   }
 
   // Rolls a die.
-  // ~~ is faster than Math.floor but doesn't work as a floor with very high 
+  // ~~ is faster than Math.floor but doesn't work as a floor with very high
   // numbers.
   function roll(sides) {
     return Math.floor(random() * sides);
@@ -16,25 +16,26 @@ function createProbable(opts) {
   function rollDie(sides) {
     if (sides === 0) {
       return 0;
-    }
-    else {
+    } else {
       return roll(sides) + 1;
     }
   }
 
   // Makes a table that maps probability ranges to outcomes.
-  // 
+  //
   // rangesAndOutcomePairs should look like this:
   // [
   //  [[0, 80], 'a'],
   //  [[81, 95], 'b'],
   //  [[96, 100], 'c']
   // ]
-  // 
+  //
   function createRangeTable(rangesAndOutcomePairs) {
     var rangesAndOutcomes = rangesAndOutcomePairs;
-    var length = rangesAndOutcomes[rangesAndOutcomes.length - 1][0][1]
-      - rangesAndOutcomes[0][0][0] + 1;
+    var length =
+      rangesAndOutcomes[rangesAndOutcomes.length - 1][0][1] -
+      rangesAndOutcomes[0][0][0] +
+      1;
 
     function curriedOutcomeAtIndex(index) {
       return outcomeAtIndex(rangesAndOutcomes, index);
@@ -43,13 +44,13 @@ function createProbable(opts) {
     function probable_rollOnTable() {
       var outcome = curriedOutcomeAtIndex(roll(length));
 
-      if (typeof outcome === 'function' &&
+      if (
+        typeof outcome === 'function' &&
         (outcome.name === 'probable_rollOnTable' ||
-        outcome.name === 'probable_pick')) {
-
+          outcome.name === 'probable_pick')
+      ) {
         return outcome();
-      }
-      else {
+      } else {
         return outcome;
       }
     }
@@ -66,10 +67,10 @@ function createProbable(opts) {
     };
   }
 
-  // Looks up what outcome corresponds to the given index. Returns undefined 
+  // Looks up what outcome corresponds to the given index. Returns undefined
   // if the index is not inside any range.
   function outcomeAtIndex(rangesAndOutcomes, index) {
-    index = (+index);
+    index = +index;
 
     for (var i = 0; i < rangesAndOutcomes.length; ++i) {
       var rangeOutcomePair = rangesAndOutcomes[i];
@@ -80,10 +81,10 @@ function createProbable(opts) {
     }
   }
 
-  // A shorthand way to create a range table object. Given a hash of outcomes 
-  // and the *size* of the probability range that they occupy, this function 
+  // A shorthand way to create a range table object. Given a hash of outcomes
+  // and the *size* of the probability range that they occupy, this function
   // generates the ranges for createRangeTable.
-  // It's handy, but if you're doing this a lot, keep in mind that it's much 
+  // It's handy, but if you're doing this a lot, keep in mind that it's much
   // slower than createRangeTable.
 
   function createRangeTableFromDict(outcomesAndLikelihoods) {
@@ -92,7 +93,7 @@ function createProbable(opts) {
     );
   }
 
-  // outcomesAndLikelihoods format: 
+  // outcomesAndLikelihoods format:
   // {
   //   failure: 30,
   //   success: 20,
@@ -182,8 +183,7 @@ function createProbable(opts) {
       if (typeof outcome === 'object') {
         if (Array.isArray(outcome)) {
           outcome = createCustomPickFromArray(outcome);
-        }
-        else {
+        } else {
           // Recurse.
           var subtable = createTableFromDef(outcome);
           if (typeof subtable.roll == 'function') {
@@ -208,8 +208,7 @@ function createProbable(opts) {
     }
     if (bounds.length === 1) {
       return [+s, +s];
-    }
-    else {
+    } else {
       return [+bounds[0], +bounds[1]];
     }
   }
@@ -239,8 +238,7 @@ function createProbable(opts) {
           if (typeof subtable.roll == 'function') {
             outcome = subtable.roll;
           }
-        }
-        else {
+        } else {
           outcome = createCustomPickFromArray(outcome);
         }
       }
@@ -251,16 +249,20 @@ function createProbable(opts) {
   // Checks to see if def is a nested array, and if the first element is a pair with
   // a number as the first element.
   function objectIsASizeDef(def) {
-    return Array.isArray(def) && def.length > 0 && Array.isArray(def[0]) &&
-      def[0].length === 2 && typeof def[0][0] === 'number';
+    return (
+      Array.isArray(def) &&
+      def.length > 0 &&
+      Array.isArray(def[0]) &&
+      def[0].length === 2 &&
+      typeof def[0][0] === 'number'
+    );
   }
 
   // Picks randomly from an array.
   function pickFromArray(array, emptyArrayDefault) {
     if (!array || typeof array.length !== 'number' || array.length < 1) {
       return emptyArrayDefault;
-    }
-    else {
+    } else {
       return array[roll(array.length)];
     }
   }
@@ -278,8 +280,7 @@ function createProbable(opts) {
       arrayB.forEach(function combineBElementWithAElement(bElement) {
         if (Array.isArray(aElement) || Array.isArray(bElement)) {
           combos.push(aElement.concat(bElement));
-        }
-        else {
+        } else {
           combos.push([aElement, bElement]);
         }
       });
@@ -291,7 +292,7 @@ function createProbable(opts) {
     return arrays.slice(1).reduce(crossArrays, arrays[0]);
   }
 
-  // From Underscore.js, except we are using the random function specified in 
+  // From Underscore.js, except we are using the random function specified in
   // our constructor instead of Math.random, necessarily.
   function shuffle(array) {
     var length = array.length;

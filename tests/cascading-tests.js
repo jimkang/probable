@@ -33,12 +33,7 @@ var easyCreateTestCases = [
       };
       var subtableDef = {
         '0-39': subSubtableDef,
-        '40-55': [
-          'Human',
-          'Dwarf',
-          'Elf',
-          'Illithid'
-        ],
+        '40-55': ['Human', 'Dwarf', 'Elf', 'Illithid'],
         '56-99': 'Rock'
       };
       return {
@@ -49,8 +44,8 @@ var easyCreateTestCases = [
     },
     resultsForSeeds: {
       'cascading createTableFromDef': 'a',
-      'createTableFromDef': 'Elf',
-      'c': 'Squirtle'
+      createTableFromDef: 'Elf',
+      c: 'Squirtle'
     }
   },
 
@@ -64,27 +59,15 @@ var easyCreateTestCases = [
       ];
       var subtableDef = [
         [40, subSubtableDef],
-        [
-          15,
-          [
-            'Human',
-            'Dwarf',
-            'Elf',
-            'Illithid'
-          ]
-        ],
+        [15, ['Human', 'Dwarf', 'Elf', 'Illithid']],
         [44, 'Rock']
       ];
-      return [
-        [21, 'a'],
-        [75, subtableDef],
-        [5, 'c']
-      ];
+      return [[21, 'a'], [75, subtableDef], [5, 'c']];
     },
     resultsForSeeds: {
       'cascading createTableFromDef': 'a',
-      'createTableFromDef': 'Elf',
-      'c': 'Squirtle'
+      createTableFromDef: 'Elf',
+      c: 'Squirtle'
     }
   }
 ];
@@ -107,10 +90,11 @@ test('cascading createRangeTable', function cascadingRangeTable(t) {
   var outerTable = probable.createRangeTable(outerTableParams);
 
   t.equal(
-    outerTable.roll(), 'Bulbasaur', 'Rolls on subtables as it encounters them.'
+    outerTable.roll(),
+    'Bulbasaur',
+    'Rolls on subtables as it encounters them.'
   );
 });
-
 
 easyCreateTestCases.forEach(runEasyCreateTest);
 
@@ -125,7 +109,9 @@ function runEasyCreateTest(testCase) {
         random: seedrandom(seed)
       });
 
-      var outerTable = probable[testCase.createFnName](testCase.getOuterTableDef());
+      var outerTable = probable[testCase.createFnName](
+        testCase.getOuterTableDef()
+      );
 
       t.equal(
         outerTable.roll(),
@@ -135,4 +121,3 @@ function runEasyCreateTest(testCase) {
     }
   }
 }
-
