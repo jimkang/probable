@@ -218,7 +218,7 @@ suite('Custom probable', function customRandomSuite() {
       }
     });
 
-    for (var i = 0; i > 100; ++i) {
+    for (var i = 0; i < 100; ++i) {
       assert.equal(altprob.roll(3), 1);
     }
 

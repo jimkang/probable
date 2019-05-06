@@ -328,6 +328,7 @@ function createProbable(opts) {
     createTableFromSizes: createTableFromSizes,
     convertDictToRangesAndOutcomePairs: convertDictToRangesAndOutcomePairs,
     pickFromArray: pickFromArray,
+    pick: pickFromArray,
     crossArrays: crossArrays,
     getCartesianProduct: getCartesianProduct,
     shuffle: shuffle,
